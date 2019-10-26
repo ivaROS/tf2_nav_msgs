@@ -5,7 +5,7 @@
 
 #include <nav_msgs/Path.h>
 #include <geometry_msgs/TransformStamped.h>
-#include <Eigen/Eigen>
+//#include <Eigen/Eigen>
 #include <tf2/convert.h>  //needed to give access to templates
 //#include <tf2_eigen/tf2_eigen.h>  //needed to transform to eigen
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
@@ -13,16 +13,34 @@
 namespace tf2
 {
 
+
+inline bool isEmpty(const std_msgs::Header& h)
+{
+  return (t.header.frame_id == "" || t.header.stamp == ros::Time ( 0 ) );
+}
+
+inline const std_msgs::Header& getHeader(const nav_msgs::Path& t)
+{
+  if(!isEmpty(t.header))
+  {
+    return t.header;
+  }
+  else
+  {
+    //ROS_ASSERT_MSG(t.poses.size()>0, "Invalid header for path, and no poses in list!");
+    return t.poses[0].header;
+  }
+}
   
 // method to extract timestamp from object
 template <>
 inline
-  const ros::Time& getTimestamp(const nav_msgs::Path& t) {return t.header.stamp;}
+  const ros::Time& getTimestamp(const nav_msgs::Path& t) {return getHeader(t).stamp;}
 
 // method to extract frame id from object
 template <>
 inline
-  const std::string& getFrameId(const nav_msgs::Path& t) {return t.header.frame_id;}
+  const std::string& getFrameId(const nav_msgs::Path& t) {return getHeader(t).frame_id;}
 
 // this method needs to be implemented by client library developers
 template <>
