@@ -1,7 +1,7 @@
 // This file could replace the one in pips_trajectory_testing, but I don't think that the tf dependencies should be required just to use the messages
 
-#ifndef TF2_NAV_MSG_H
-#define TF2_NAV_MSG_H
+#ifndef TF2_NAV_MSGS_TF2_PATH_MSG_H
+#define TF2_NAV_MSGS_TF2_PATH_MSG_H
 
 #include <nav_msgs/Path.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -16,7 +16,7 @@ namespace tf2
 
 inline bool isEmpty(const std_msgs::Header& h)
 {
-  return (t.header.frame_id == "" || t.header.stamp == ros::Time ( 0 ) );
+  return (h.frame_id == "" || h.stamp == ros::Time ( 0 ) );
 }
 
 inline const std_msgs::Header& getHeader(const nav_msgs::Path& t)
@@ -64,6 +64,6 @@ inline
   }
 
 
-}
+} //end namespace tf2
 
-#endif /* TF2_NAV_MSG_H */
+#endif /* TF2_NAV_MSGS_TF2_PATH_MSG_H */
